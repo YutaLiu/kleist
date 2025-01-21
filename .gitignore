@@ -1,0 +1,28 @@
+# Build directory
+build/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+Makefile
+
+# Compiled Object files
+*.o
+*.obj
+
+# Verilator generated files
+obj_dir/
+
+# IDE specific files
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
