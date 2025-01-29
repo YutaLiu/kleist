@@ -50,3 +50,31 @@ make
    - Multiple bank access
    - Different data patterns
    - Refresh operations
+
+
+## LPDDR5 toplogy 
+```
+ Rank (if Multi-Die)
+ ├── Channel 
+ │   ├── Die 
+ │   │   ├── CE (Chip Enable)
+ │   │   │   ├── Bank Group (LPDDR5 has Bank Group Archi)
+ │   │   │   │   ├── Bank (Single Bank)
+ │   │   │   │   │   ├── Row (行, 2D Array)
+ │   │   │   │   │   ├── Column (列, 2D Array)
+```
+- General OS cache line size is 64 bytes
+- Page Size (Bytes): [1024,2048,4096]
+- Page Size = Column Count * Array prefetch Bytes
+- Column Per Row (#) : [64]
+- Row Per bank (#) : [49152 , 98304]
+- Number of Bank Group : [1,4]
+- Number of Banks : [4 , 8 , 16] 
+- Array preFetch bits : [128 , 256 , 512]
+- Native Burst Length = Array preFetch bits/16 (DQ16 bits)
+- Each Column contain (Bytes): Page Size (Bytes)  / Column Per Row (#)
+- Each Die size (bits) : Page Size (Bytes) * Row Per bank (#) * Bank Group (#) * Bank Per Bank Group (#)
+
+
+* Array PreFetch Bytes is Internal DRAM cell array output's byte count
+* Native Burst Length is DRAM IO  output's CLK count
