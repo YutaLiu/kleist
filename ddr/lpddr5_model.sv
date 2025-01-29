@@ -1,5 +1,6 @@
 module lpddr5_model
     import lpddr5_params::*;
+    import lpddr5_controller_enum::*;
 #(
     parameter CHANNELS = 2,
     parameter BURST_LENGTH = 16,

@@ -1,5 +1,7 @@
 module lpddr5_tb;
     import lpddr5_params::*;
+    import lpddr5_controller_enum::*;
+    import lpddr5_controller_struct::*;
 
     // general parameters
     localparam CHANNELS = 2;
@@ -15,8 +17,8 @@ module lpddr5_tb;
     logic                    cmd_rw;
     logic [PRIORITY_WIDTH-1:0] cmd_priority;
     logic [ADDR_WIDTH-1:0]   cmd_addr;
-    logic [CHANNELS-1:0][DATA_BITS-1:0][BURST_LENGTH-1:0] cmd_wdata;
-    logic [CHANNELS-1:0][DATA_BITS-1:0][BURST_LENGTH-1:0] cmd_rdata;
+    logic [DATA_BITS-1:0][BURST_LENGTH-1:0] cmd_wdata;
+    logic [DATA_BITS-1:0][BURST_LENGTH-1:0] cmd_rdata;
     logic                    cmd_ready;
     
     // DRAM model interface signals
@@ -90,7 +92,7 @@ module lpddr5_tb;
         cmd_valid = 1;
         cmd_rw = 1;  // Write operation
         cmd_addr = 32'h1000;
-        cmd_wdata[0][0][0] = 32'hdeadbeef;
+        cmd_wdata[0][0] = 32'hdeadbeef;
         /* verilator lint_off STMTDLY */
         #1;  // Wait for command to be registered
         /* verilator lint_on STMTDLY */
@@ -130,11 +132,11 @@ module lpddr5_tb;
         $display("[%0t] Read completed", $time);
 
         // Check read data
-        if (cmd_rdata[0][0][0] === 32'hdeadbeef) begin
+        if (cmd_rdata[0] === 32'hdeadbeef) begin
             $display("[%0t] TB: Read data matches written data", $time);
         end else begin
             $display("[%0t] TB: Read data mismatch. Expected: %h, Got: %h", 
-                    $time, 32'hdeadbeef, cmd_rdata[0][0][0]);
+                    $time, 32'hdeadbeef, cmd_rdata[0]);
         end
 
         // End simulation

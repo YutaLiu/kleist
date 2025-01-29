@@ -14,6 +14,11 @@ Makefile
 # Verilator generated files
 obj_dir/
 
+# Waveform files
+*.vcd
+*.fst
+*.lxt
+
 # IDE specific files
 .vscode/
 .idea/

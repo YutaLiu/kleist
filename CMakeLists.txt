@@ -13,12 +13,14 @@ endif()
 # Add source files
 set(VERILOG_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/ddrc/lpddr5_params.sv
+    ${CMAKE_CURRENT_SOURCE_DIR}/ddrc/lpddr5_controller_struct.sv
+    ${CMAKE_CURRENT_SOURCE_DIR}/ddrc/lpddr5_controller_enum.sv
     ${CMAKE_CURRENT_SOURCE_DIR}/ddr/lpddr5_model.sv
     ${CMAKE_CURRENT_SOURCE_DIR}/ddrc/lpddr5_controller.sv
     ${CMAKE_CURRENT_SOURCE_DIR}/tb/lpddr5_tb.sv
 )
 
-# Create a new executable target
+# Create a new executable target name ddr_sim , and use sim_main.cpp as the source file
 add_executable(ddr_sim sim_main.cpp)
 
 # Create Verilated objects

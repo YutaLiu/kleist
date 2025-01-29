@@ -7,7 +7,7 @@ package lpddr5_params;
     parameter PRIORITY_WIDTH = 4;
     parameter CMD_QUEUE_DEPTH = 32;
     parameter BANK_NUM = 8;
-    
+    parameter ROW_WIDTH = 16;     // Row address width
     // Timing parameters (for simulation, using reduced values)
     parameter CL = 4;         // CAS Latency
     parameter tRCD = 4;       // RAS to CAS Delay
@@ -18,25 +18,5 @@ package lpddr5_params;
     parameter tRFC = 20;      // Refresh Cycle Time
     parameter tREFI = 100;    // Refresh Interval (reduced for simulation)
     
-    // Command definitions
-    typedef enum logic [2:0] {
-        CMD_NOP  = 3'b000,
-        CMD_ACT  = 3'b001,
-        CMD_RD   = 3'b010,
-        CMD_WR   = 3'b011,
-        CMD_PRE  = 3'b100,
-        CMD_REF  = 3'b101
-    } dram_cmd_t;
-    
-    // Bank states
-    typedef enum logic [2:0] {
-        IDLE,
-        ACTIVATING,
-        ACTIVE,
-        READING,
-        WRITING,
-        PRECHARGING,
-        REFRESHING
-    } bank_state_t;
-    
+
 endpackage
