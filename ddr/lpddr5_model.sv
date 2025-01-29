@@ -21,8 +21,8 @@ module lpddr5_model
     logic [DATA_BITS-1:0] memory[CHANNELS][2**20]; 
     
     // Bank status
-    logic [BANK_NUM-1:0] bank_active;
-    logic [ADDR_WIDTH-1:0] active_row[BANK_NUM];
+    logic [BANK_NUMBER-1:0] bank_active;
+    logic [ADDR_WIDTH-1:0] active_row[BANK_NUMBER];
     
     // counter
     logic [15:0] tRCD_counter;   // RAS to CAS delay
@@ -34,7 +34,7 @@ module lpddr5_model
     logic [15:0] cas_counter;    // CAS latency counter
 
     // bank index 
-    logic [$clog2(BANK_NUM)-1:0] current_bank;
+    logic [$clog2(BANK_NUMBER)-1:0] current_bank;
     
     // Bank state machine 
     typedef enum logic [2:0] {
@@ -47,7 +47,7 @@ module lpddr5_model
         REFRESHING
     } bank_state_t;
     
-    bank_state_t bank_state[BANK_NUM];
+    bank_state_t bank_state[BANK_NUMBER];
 
     // 初始化和重置邏輯
     always_ff @(posedge clk or negedge rst_n) begin
@@ -63,7 +63,7 @@ module lpddr5_model
             cas_counter <= '0;
             dram_ready <= 1'b1;
             dram_rdata <= '0;
-            for (int i = 0; i < BANK_NUM; i++) begin
+            for (int i = 0; i < BANK_NUMBER; i++) begin
                 bank_state[i] <= IDLE;
                 active_row[i] <= '0;
             end
@@ -78,7 +78,7 @@ module lpddr5_model
             if (cas_counter > 0) cas_counter <= cas_counter - 1;
 
             // 命令處理
-            current_bank = dram_addr[ADDR_WIDTH-1:ADDR_WIDTH-$clog2(BANK_NUM)];
+            current_bank = dram_addr[ADDR_WIDTH-1:ADDR_WIDTH-$clog2(BANK_NUMBER)];
             
             case (dram_cmd)
                 CMD_ACT: begin
@@ -137,7 +137,7 @@ module lpddr5_model
                 CMD_REF: begin
                     $display("[%0t] DRAM: Refresh cycle started", $time);
                     if (!(|bank_active) && tRP_counter == 0) begin
-                        for (int i = 0; i < BANK_NUM; i++) begin
+                        for (int i = 0; i < BANK_NUMBER; i++) begin
                             bank_state[i] <= REFRESHING;
                         end
                         bank_active <= '0;
@@ -148,7 +148,7 @@ module lpddr5_model
 
                 default: begin // CMD_NOP
                     // 更新Bank狀態
-                    for (int i = 0; i < BANK_NUM; i++) begin
+                    for (int i = 0; i < BANK_NUMBER; i++) begin
                         case (bank_state[i])
                             ACTIVATING: begin
                                 if (tRCD_counter == 0)

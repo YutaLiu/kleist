@@ -48,9 +48,9 @@ module lpddr5_controller
     logic [$clog2(CMD_QUEUE_DEPTH):0] wqueue_count, rqueue_count;
 
     // bank status
-    logic bank_open[BANK_NUM];
-    logic [$clog2(BANK_NUM)-1:0] current_bank;
-    logic [ROW_WIDTH-1:0] active_row[BANK_NUM];
+    logic bank_open[BANK_NUMBER];
+    logic [BANK_PER_BANK_GROUP_ADDRESS_WIDTH-1:0] current_bank;
+    logic [ROW_PER_BANK_GROUP_ADDRESS_WIDTH-1:0] active_row[BANK_PER_BANK_GROUP_COUNT];
     
     // refresh counter
     logic [15:0] refresh_counter;
@@ -120,7 +120,7 @@ module lpddr5_controller
             current_state <= IDLE;
             cmd_ready <= 1'b1;
             refresh_counter <= '0;
-            for (int i = 0; i < BANK_NUM; i++) begin
+            for (int i = 0; i < BANK_PER_BANK_GROUP_COUNT*BANK_GROUP_COUNT; i++) begin
                 bank_open[i] <= 1'b0;
             end
         end else begin
